@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>彩蛋 | 高辰君</title>
+<link rel="shortcut icon" href="assets/logo.jpg" />
+
+<style>
+/* ===== 基础重置 ===== */
+* {margin:0;padding:0;box-sizing:border-box;}
+
+/* ===== 背景 ===== */
+body {
+    font-family: "Segoe UI", sans-serif;
+    min-height:100vh;
+    background-image:url('https://images.unsplash.com/photo-1501785888041-af3ef285b470');
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+    transition:0.5s;
+}
+
+/* 夜间 */
+body.dark {background-color:rgba(0,0,0,0.7);color:#fff;}
+
+/* ===== 毛玻璃 ===== */
+.glass {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(12px);
+    border:1px solid rgba(255,255,255,0.2);
+    border-radius:20px;
+    transition:0.3s;
+}
+
+/* ===== 动画定义 ===== */
+@keyframes fadeUp {
+    from {opacity:0; transform:translateY(30px);} 
+    to {opacity:1; transform:translateY(0);} 
+}
+
+@keyframes fadeIn {
+    from {opacity:0;} 
+    to {opacity:1;} 
+}
+
+/* ===== 头部 ===== */
+header {
+    display:flex;
+    align-items:center;
+    padding:15px 30px;
+    margin:20px;
+    animation:fadeIn 1s ease;
+}
+
+.logo {display:flex;align-items:center;gap:10px;}
+
+.logo img {
+    width:35px;height:35px;border-radius:50%;
+    transition:0.3s;
+}
+
+/* LOGO 悬浮 */
+.logo img:hover {transform:rotate(360deg) scale(1.1);} 
+
+nav {margin-left:auto;}
+
+nav ul {display:flex;gap:30px;list-style:none;}
+
+nav a {
+    text-decoration:none;
+    color:inherit;
+    position:relative;
+    transition:0.3s;
+}
+
+/* 导航动画 */
+nav a:hover {transform:translateY(-2px);} 
+
+nav a::after {
+    content:"";
+    position:absolute;
+    left:0;bottom:-5px;
+    width:0;height:2px;
+    background:currentColor;
+    transition:0.3s;
+}
+
+nav a:hover::after {width:100%;}
+
+/* ===== 控制区 ===== */
+.controls {display:flex;gap:10px;margin-left:20px;}
+
+.icon-btn {
+    padding:6px 10px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.icon-btn:hover {
+    transform:scale(1.1);
+    background:rgb(255, 255, 255);
+}
+
+/* ===== 语言菜单 ===== */
+.lang-menu {position:relative;}
+
+.lang-dropdown {
+    position:absolute;
+    top:40px;
+    right:0;
+    display:none;
+    flex-direction:column;
+    gap:6px;
+    padding:10px;
+    animation:fadeIn 0.3s;
+}
+
+.lang-item {display:flex;gap:8px;cursor:pointer;transition:0.2s;}
+
+.lang-item:hover {transform:translateX(5px);} 
+
+/* ===== 主视觉 ===== */
+.hero {
+    height:80vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:20px;
+    text-align:center;
+}
+
+.hero h1 {
+    font-size:42px;
+    animation:fadeUp 1s ease;
+}
+
+.tags {display:flex;gap:10px;}
+
+.tag {
+    padding:6px 14px;
+    border-radius:20px;
+    animation:fadeUp 1s ease;
+}
+
+/* 标签悬浮 */
+.tag:hover {transform:translateY(-3px) scale(1.05);} 
+
+/* ===== 按钮 ===== */
+.project-btn {
+    padding:12px 28px;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.3s;
+    animation:fadeUp 1.2s ease;
+}
+
+.project-btn:hover {
+    transform:translateY(-4px) scale(1.05);
+    background:#ffffff;
+}
+
+/* ===== 页脚 ===== */
+footer {
+    text-align:center;
+    margin:20px;
+    padding:15px;
+    animation:fadeIn 1.5s ease;
+}
+
+</style>
+</head>
+
+<body class="light">
+
+<header class="glass">
+
+<div class="logo">
+    <img src="assets/logo.jpg">
+    <span id="logoText">高辰君</span>
+</div>
+
+<nav>
+    <ul>
+        <li><a href="caidan.html">愚人节快乐！</a></li>
+        <li><a href="caidan.html">愚人节快乐！</a></li>
+        <li><a href="caidan.html">愚人节快乐！</a></li>
+    </ul>
+</nav>
+
+<div class="controls">
+
+<div class="lang-menu">
+    <div class="icon-btn glass" onclick="toggleLang()">🌐</div>
+    <div class="lang-dropdown glass" id="langList">
+        <div class="lang-item" onclick="setLang('zh')">🇨🇳 中文</div>
+        <div class="lang-item" onclick="setLang('en')">🇺🇸 English</div>
+        <div class="lang-item" onclick="setLang('jp')">🇯🇵 日本語</div>
+        <div class="lang-item" onclick="setLang('ca')">ca 喵喵</div>
+    </div>
+</div>
+
+</div>
+
+</header>
+
+<main>
+
+<section class="hero">
+    <h1 id="title">恭喜你发现了愚人节彩蛋！</h1>
+
+    <div class="tags">
+        <span class="tag glass" id="tag1">2027年</span>
+        <span class="tag glass" id="tag2">4月1日</span>
+        <span class="tag glass" id="tag3">愚人节快乐！</span>
+    </div>
+
+    <button class="glass project-btn" id="btnText" onclick="goProject()">返回官网</button>
+</section>
+
+</main>
+
+<footer class="glass">
+<p>Copyright ©2018-2026 高辰君 保留所有权利</p>
+</footer>
+
+<script>
+
+/* 语言菜单 */
+function toggleLang(){
+    const list=document.getElementById('langList');
+    list.style.display = list.style.display==='flex'?'none':'flex';
+}
+
+/* 语言切换 */
+function setLang(lang){
+    const title=document.getElementById('title');
+    const btn=document.getElementById('btnText');
+    const tag1=document.getElementById('tag1');
+    const tag2=document.getElementById('tag2');
+    const tag3=document.getElementById('tag3');
+    const tag4=document.getElementById('tag4');
+
+    const map={
+        zh:{title:'恭喜你发现了愚人节彩蛋！',btn:'返回官网',t1:'2027年',t2:'4月1日',t3:'愚人节快乐！'},
+        en:{title:'恭喜你发现了愚人节彩蛋！',btn:'返回官网',t1:'2027年',t2:'4月1日',t3:'愚人节快乐！'},
+        jp:{title:'恭喜你发现了愚人节彩蛋！',btn:'返回官网',t1:'2027年',t2:'4月1日',t3:'愚人节快乐！'},
+        ca:{title:'喵喵喵喵喵喵喵喵喵喵喵！',btn:'喵喵喵喵',t1:'2027喵',t2:'4喵1喵',t3:'喵喵喵喵喵！'},
+        
+    };
+
+    const data=map[lang]||map.zh;
+    title.innerText=data.title;
+    btn.innerText=data.btn;
+    tag1.innerText=data.t1;
+    tag2.innerText=data.t2;
+    tag3.innerText=data.t3;
+}
+
+/* 跳转主页 */
+function goProject(){
+    window.location.href='index.html';
+}
+</script>
+
+</body>
+</html>
