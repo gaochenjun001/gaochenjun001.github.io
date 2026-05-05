@@ -1,0 +1,148 @@
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+    font-family:"Segoe UI",sans-serif;
+    color:#fff;
+    min-height:100vh;
+
+    background:
+    linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)),
+    url('https://images.unsplash.com/photo-1501785888041-af3ef285b470') center/cover fixed;
+}
+
+/* 动画 */
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(20px);}
+to{opacity:1;}
+}
+@keyframes gradientMove{
+0%{background-position:0%;}
+100%{background-position:100%;}
+}
+
+/* ===== 统一玻璃栏 ===== */
+.glass-bar{
+position:fixed;
+left:16px;
+right:16px;
+padding:10px 20px;
+border-radius:25px;
+
+display:flex;
+align-items:center;
+
+background:linear-gradient(90deg,#ffaa50,#78b4ff,#ffaa50);
+background-size:200%;
+
+animation:gradientMove 6s linear infinite;
+
+backdrop-filter:blur(25px);
+z-index:999;
+}
+
+header{top:10px;}
+footer{bottom:12px;justify-content:center;font-size:13px;}
+
+/* ===== 导航 ===== */
+.logo{display:flex;align-items:center;gap:10px;}
+.logo img{width:34px;height:34px;border-radius:50%;}
+
+nav{
+margin-left:auto;
+display:flex;
+gap:18px;
+align-items:center;
+flex-wrap:wrap;
+}
+
+nav a{color:#fff;text-decoration:none;font-size:14px;}
+
+/* ===== 语言菜单 ===== */
+.lang-box{position:relative;}
+
+.lang-current{
+padding:5px 12px;
+border-radius:15px;
+background:rgba(0,0,0,0.3);
+cursor:pointer;
+}
+
+.lang-menu{
+position:absolute;
+top:40px;
+right:0;
+width:260px;
+background:rgba(0,0,0,0.85);
+border-radius:12px;
+display:none;
+}
+
+.lang-menu div{
+padding:10px;
+cursor:pointer;
+}
+.lang-menu div:hover{
+background:rgba(255,255,255,0.2);
+}
+
+/* ===== 内容 ===== */
+.container{
+margin-top:140px;
+text-align:center;
+animation:fadeIn 1s;
+padding:20px;
+}
+
+.card{
+margin:20px auto;
+max-width:320px;
+padding:20px;
+border-radius:18px;
+background:rgba(255,255,255,0.1);
+backdrop-filter:blur(15px);
+}
+
+/* ===== 按钮 ===== */
+.btn{
+    padding:12px 30px;
+    border:none;
+    border-radius:30px;
+    cursor:pointer;
+    color:#fff;
+    font-size:14px;
+    letter-spacing:1px;
+
+    /* 液态渐变 */
+    background:linear-gradient(120deg,
+        rgba(255,255,255,0.25),
+        rgba(120,180,255,0.35),
+        rgba(255,255,255,0.25)
+    );
+    background-size:200%;
+
+    /* 核心：液态动画 */
+    animation:liquid 6s linear infinite;
+
+    /* 毛玻璃 */
+    backdrop-filter:blur(20px);
+
+    /* 立体感 */
+    box-shadow:0 6px 25px rgba(0,0,0,0.35);
+
+    transition:all .3s ease;
+}
+
+.btn:hover{
+    transform:translateY(-2px) scale(1.05);
+    box-shadow:0 10px 35px rgba(0,0,0,0.5);
+}
+
+.btn:active{
+    transform:scale(0.96);
+}
+
+/* 📱 响应式 */
+@media(max-width:600px){
+nav{gap:10px;}
+.container{margin-top:120px;}
+}
