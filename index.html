@@ -1,817 +1,205 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="小狐务器 - 全栈开发者 | 设计师 | 创作者的个人主页">
-    <title>高辰君-个人主页</title>
-    <style>
-        @font-face {
-            font-family: 'ZQKNNY';
-            src: url('ZQKNNY-Medium-2.woff2') format('woff2');
-            font-weight: 500;
-            font-style: normal;
-            font-display: swap;
-        }
-    </style>
-    <!-- 关键资源预加载 -->
-    <link rel="preload" href="ZQKNNY-Medium-2.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="admin/api.php?action=get_content" as="fetch" crossorigin>
-    <link rel="preload" href="APP/index.html" as="fetch" crossorigin>
-    <link rel="stylesheet" href="style/word.css">
-    <link rel="stylesheet" href="style/new.css">
-    <link rel="stylesheet" href="style/lan.css">
-    <link rel="stylesheet" href="style/icon.css">
-    <link rel="stylesheet" href="style/aoo.css">
-    <style>
-        /* 内容加载前隐藏，防止默认内容闪烁 */
-        .main-content { opacity: 0; transition: opacity .3s ease; }
-        .main-content.loaded { opacity: 1; }
-        /* 滚动渐入动画 */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(24px);
-            transition: opacity .5s ease, transform .5s ease;
-        }
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    </style>
-</head>
-<body>
-    <div class="bg">
-        <div class="pattern-bg">
-            <svg class="cube-svg" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <pattern id="cube" x="0" y="0" width="60" height="52" patternUnits="userSpaceOnUse">
-                        <path d="M30 0 L60 15 L60 41 L30 52 L0 41 L0 15 Z" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
-                        <path d="M30 26 L60 15 M30 26 L0 15 M30 26 L30 52" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
-                    </pattern>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#cube)"/>
-            </svg>
-        </div>
-    </div>
-    <div class="bg-blur"></div>
-    <div class="container">
-        <!-- 左侧栏 -->
-        <aside class="sidebar">
-            <!-- 头像 -->
-            <div class="avatar-card">
-                <div class="avatar">
-                    <div class="avatar-placeholder">头像</div>
-                </div>
-            </div>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>高辰君</title>
 
-            <!-- 社交媒体滚动 -->
-            <div class="content" id="appMarquee"></div>
-
-            <!-- 联系方式图标 -->
-            <div class="glass-radio-group">
-                <input type="radio" name="icon" id="glass-mail" checked>
-                <label for="glass-mail" aria-label="邮件">
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-                </label>
-                <input type="radio" name="icon" id="glass-chat">
-                <label for="glass-chat" aria-label="微信">
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/></svg>
-                </label>
-                <input type="radio" name="icon" id="glass-link">
-                <label for="glass-link" aria-label="链接">
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                </label>
-                <input type="radio" name="icon" id="glass-phone">
-                <label for="glass-phone" aria-label="手机">
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-                </label>
-                <div class="glass-glider"></div>
-            </div>
-
-            <!-- 导航列表 -->
-            <div class="radio-container" style="--total-radio: 4;">
-                <input type="radio" name="nav" id="nav-about" checked>
-                <label for="nav-about">简介</label>
-                <input type="radio" name="nav" id="nav-skills">
-                <label for="nav-skills">技能</label>
-                <input type="radio" name="nav" id="nav-projects">
-                <label for="nav-projects">项目</label>
-                <input type="radio" name="nav" id="nav-contact">
-                <label for="nav-contact">联系</label>
-                <div class="glider-container">
-                    <div class="glider"></div>
-                </div>
-            </div>
-        </aside>
-
-        <!-- 右侧主内容区 -->
-        <main class="main-content">
-            <!-- 移动端头像（仅小屏显示） -->
-            <div class="mobile-avatar-card" id="mobileAvatarCard">
-                <div class="mobile-avatar">
-                    <div class="avatar-placeholder">头像</div>
-                </div>
-            </div>
-
-            <!-- 标题 -->
-            <div class="title-card fade-in">
-                <h1 class="title-wrap">
-                    <span class="title-prefix">欢迎来到</span><span class="title">高辰君</span>
-                </h1>
-            </div>
-
-            <!-- 副标题 -->
-            <div class="subtitle-card fade-in">
-                <h2 class="subtitle-wrap">
-                    <span class="subtitle-prefix">Welcome everyone to my website</span><span class="subtitle-name">gaochenjun</span>
-                </h2>
-            </div>
-
-            <!-- 像素文字 -->
-            <div class="pixel-banner fade-in">
-                <div class="pixel-grid" id="pixelGrid"></div>
-            </div>
-
-            <!-- 个人简介 -->
-            <div class="intro-card fade-in" id="about">
-                <h3 class="section-title">个人简介</h3>
-                <p class="intro-text">
-                    我是一个热爱前端与视觉设计的开发者，喜欢折腾各种炫酷但不浮夸的交互效果，
-                    也在不断打磨自己在工程化、性能优化和产品体验上的能力。如果你有有趣的想法、
-                    项目或合作机会，欢迎随时通过下方联系方式或邮件模块来找我聊聊。
-                </p>
-            </div>
-
-            <!-- 技能展示 -->
-            <div class="skills-card fade-in" id="skills">
-                <h3 class="section-title">技能</h3>
-                <div class="skills-grid">
-                    <span class="skill-tag">HTML / CSS</span>
-                    <span class="skill-tag">JavaScript</span>
-                    <span class="skill-tag">TypeScript</span>
-                    <span class="skill-tag">Vue.js</span>
-                    <span class="skill-tag">React</span>
-                    <span class="skill-tag">Node.js</span>
-                    <span class="skill-tag">UI/UX 设计</span>
-                    <span class="skill-tag">Git</span>
-                    <span class="skill-tag">Webpack</span>
-                    <span class="skill-tag">Docker</span>
-                </div>
-            </div>
-
-            <!-- 项目展示 -->
-            <div class="projects-card fade-in" id="projects">
-                <h3 class="section-title">项目</h3>
-                <div class="projects-grid">
-                    <a class="project-item project-link" href="http://www.rainvps.cn" target="_blank" rel="noopener noreferrer">
-                        <div class="project-icon">
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                        </div>
-                        <div class="project-title">个人主页</div>
-                        <div class="project-desc">基于玻璃拟态风格的个人展示页面</div>
-                    </a>
-                    <a class="project-item project-link" href="http://www.rainvps.cn" target="_blank" rel="noopener noreferrer">
-                        <div class="project-icon">
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-                        </div>
-                        <div class="project-title">开源工具</div>
-                        <div class="project-desc">实用的开发者效率工具集</div>
-                    </a>
-                    <a class="project-item project-link" href="http://www.rainvps.cn" target="_blank" rel="noopener noreferrer">
-                        <div class="project-icon">
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
-                        </div>
-                        <div class="project-title">UI 组件库</div>
-                        <div class="project-desc">可复用的前端界面组件</div>
-                    </a>
-                    <a class="project-item project-link" href="http://www.rainvps.cn" target="_blank" rel="noopener noreferrer">
-                        <div class="project-icon">
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3z"/></svg>
-                        </div>
-                        <div class="project-title">创意作品</div>
-                        <div class="project-desc">视觉设计与交互实验</div>
-                    </a>
-                </div>
-            </div>
-
-            <!-- 联系方式 + 邮件回复（整合大模块） -->
-            <div class="comms-card fade-in" id="contact">
-                <div class="comms-header">
-                    <h3 class="section-title comms-title">联系我</h3>
-                    <p class="comms-subtitle">你可以直接查看联系方式，或写一封邮件给我。</p>
-                </div>
-
-                <div class="comms-grid">
-                    <section class="comms-col comms-contact" aria-label="联系方式">
-                        <h4 class="comms-col-title">联系方式</h4>
-                        <div class="contact-info">
-                            <div class="contact-item">
-                                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-                                Email: example@email.com
-                            </div>
-                            <div class="contact-item">
-                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/></svg>
-                                WeChat: example_wechat
-                            </div>
-                            <div class="contact-item">
-                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
-                                GitHub: github.com/username
-                            </div>
-                        </div>
-                    </section>
-
-                    <div class="comms-divider" aria-hidden="true"></div>
-
-                    <section class="comms-col comms-email" aria-label="邮件回复">
-                        <div class="email-header">
-                            <div class="email-icon" aria-hidden="true">
-                                <svg viewBox="0 0 24 24" aria-hidden="true">
-                                    <rect x="2" y="4" width="20" height="16" rx="3" ry="3"/>
-                                    <polyline points="3 6 12 13 21 6" />
-                                </svg>
-                            </div>
-                            <div class="email-header-text">
-                                <h4 class="comms-col-title email-title">邮件回复</h4>
-                                <p class="email-subtitle">写下你的问题或想法，我会通过邮箱回复你。</p>
-                            </div>
-                        </div>
-                        <form class="email-form" id="emailReplyForm">
-                            <div class="email-row email-row-inline">
-                                <div class="email-field">
-                                    <label class="email-label" for="email-name">称呼</label>
-                                    <input class="email-input" type="text" id="email-name" name="name" placeholder="怎么称呼你？">
-                                </div>
-                                <div class="email-field">
-                                    <label class="email-label" for="email-from">邮箱</label>
-                                    <input class="email-input" type="email" id="email-from" name="from" placeholder="用于回复你的邮箱">
-                                </div>
-                            </div>
-                            <div class="email-row">
-                                <label class="email-label" for="email-message">留言内容</label>
-                                <textarea class="email-textarea" id="email-message" name="message" rows="3" placeholder="写下你想对我说的话..."></textarea>
-                            </div>
-                            <div class="email-row">
-                                <label class="email-label">附带图片（可选）</label>
-                                <div class="email-image-upload" id="emailImageUpload">
-                                    <input type="file" id="emailImageFile" accept="image/jpeg,image/png,image/gif,image/webp" style="display:none">
-                                    <div class="email-image-placeholder" id="emailImagePlaceholder">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                                        <span>点击或拖拽上传图片（最大 2MB）</span>
-                                    </div>
-                                    <div class="email-image-preview" id="emailImagePreview" style="display:none">
-                                        <img id="emailImagePreviewImg" src="" alt="预览">
-                                        <button type="button" class="email-image-remove" id="emailImageRemove" title="移除图片">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="email-actions">
-                                <button class="email-submit" type="submit">发送邮件</button>
-                                <p class="email-hint">将使用默认邮箱客户端发送。</p>
-                            </div>
-                        </form>
-                    </section>
-                </div>
-            </div>
-        </main>
-    </div>
-<script>
-// 并行加载社交媒体模块（不阻塞主内容）
-var _marqueePromise = fetch('APP/index.html').then(function(r) { return r.text(); }).catch(function() { return ''; });
-_marqueePromise.then(function(html) {
-    if (!html) return;
-    var container = document.getElementById('appMarquee');
-    var parser = new DOMParser();
-    var doc = parser.parseFromString(html, 'text/html');
-    doc.querySelectorAll('script').forEach(function(s) { s.remove(); });
-    doc.querySelectorAll('*').forEach(function(el) {
-        [...el.attributes].forEach(function(attr) {
-            if (attr.name.toLowerCase().startsWith('on')) el.removeAttribute(attr.name);
-        });
-    });
-    container.innerHTML = doc.body.innerHTML;
-});
-</script>
-<script>
-// 用于清理上一次渲染的动画和观察器
-var _pixelAnimationId = null;
-var _pixelObserver = null;
-
-function renderPixelBanner(text) {
-    // 清理上一次的动画和观察器
-    if (_pixelAnimationId) {
-        cancelAnimationFrame(_pixelAnimationId);
-        _pixelAnimationId = null;
-    }
-    if (_pixelObserver) {
-        _pixelObserver.disconnect();
-        _pixelObserver = null;
-    }
-
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const grid = document.getElementById('pixelGrid');
-
-    // 根据容器宽度自适应
-    const containerWidth = grid.parentElement.clientWidth || 420;
-    const baseGap = 1;
-    var cols, rows, cellSize;
-
-    if (containerWidth < 500) {
-        // 移动端：减少列数、适当增大格子，让文字更清晰
-        cellSize = 4;
-        cols = Math.floor((containerWidth + baseGap) / (cellSize + baseGap));
-        cols = Math.max(35, Math.min(cols, 65));
-        rows = 14;
-    } else {
-        // 桌面端：保持原有 70 列策略
-        var baseCols = 70;
-        cellSize = Math.floor((containerWidth + baseGap) / baseCols) - baseGap;
-        cellSize = Math.max(3, Math.min(cellSize, 6));
-        cols = baseCols;
-        rows = 16;
-    }
-
-    // 最终校验：确保总宽度不超过容器
-    var gridTotalW = cols * cellSize + (cols - 1) * baseGap;
-    while (gridTotalW > containerWidth && cols > 35) {
-        cols--;
-        gridTotalW = cols * cellSize + (cols - 1) * baseGap;
-    }
-
-    // 小格子时减少行数保持比例
-    if (cellSize <= 3) rows = 12;
-    else if (cellSize <= 4) rows = Math.min(rows, 14);
-
-    // 用离屏 Canvas 生成文字点阵
-    const textCanvas = document.createElement('canvas');
-    textCanvas.width = cols;
-    textCanvas.height = rows;
-    const tctx = textCanvas.getContext('2d');
-    tctx.fillStyle = '#000';
-    tctx.fillRect(0, 0, cols, rows);
-    tctx.fillStyle = '#fff';
-    var fontSize = rows <= 12 ? 11 : (rows <= 14 ? 12 : 14);
-    var fontWeight = containerWidth < 500 ? '100' : '100';
-    tctx.font = 'italic ' + fontWeight + ' ' + fontSize + 'px "Microsoft YaHei", "PingFang SC", sans-serif';
-    tctx.textAlign = 'center';
-    tctx.textBaseline = 'middle';
-    tctx.letterSpacing = '8px';
-    const spacing = -5;
-    const totalWidth = tctx.measureText(text).width + spacing * (text.length - 1);
-    let x = (cols - totalWidth) / 2;
-    for (const ch of text) {
-        const w = tctx.measureText(ch).width;
-        tctx.fillText(ch, x + w / 2 + 3, rows / 2);
-        x += w + spacing;
-    }
-    var imageData = tctx.getImageData(0, 0, cols, rows);
-
-    // 检测文字实际占用的行范围，垂直居中并保证上下至少 2 行空白
-    var topRow = rows, bottomRow = 0;
-    for (var sr = 0; sr < rows; sr++) {
-        for (var sc = 0; sc < cols; sc++) {
-            if (imageData.data[(sr * cols + sc) * 4] > 80) {
-                if (sr < topRow) topRow = sr;
-                if (sr > bottomRow) bottomRow = sr;
-            }
-        }
-    }
-    if (topRow <= bottomRow) {
-        var textHeight = bottomRow - topRow + 1;
-        var idealTop = Math.floor((rows - textHeight) / 2);
-        idealTop = Math.max(1, Math.min(idealTop, rows - textHeight - 1));
-        var shift = idealTop - topRow;
-        if (shift !== 0) {
-            var oldData = new Uint8ClampedArray(imageData.data);
-            imageData.data.fill(0);
-            for (var sr2 = 0; sr2 < rows; sr2++) {
-                var dstRow = sr2 + shift;
-                if (dstRow < 0 || dstRow >= rows) continue;
-                for (var sc2 = 0; sc2 < cols; sc2++) {
-                    var srcIdx = (sr2 * cols + sc2) * 4;
-                    var dstIdx = (dstRow * cols + sc2) * 4;
-                    imageData.data[dstIdx]     = oldData[srcIdx];
-                    imageData.data[dstIdx + 1] = oldData[srcIdx + 1];
-                    imageData.data[dstIdx + 2] = oldData[srcIdx + 2];
-                    imageData.data[dstIdx + 3] = oldData[srcIdx + 3];
-                }
-            }
-        }
-    }
-
-    // 用 DOM 元素渲染像素网格
-    grid.innerHTML = '';
-    grid.style.display = 'grid';
-    grid.style.gridTemplateColumns = 'repeat(' + cols + ', ' + cellSize + 'px)';
-    grid.style.gap = baseGap + 'px';
-
-    var activePixels = [];
-    for (var r = 0; r < rows; r++) {
-        for (var c = 0; c < cols; c++) {
-            var idx = (r * cols + c) * 4;
-            var el = document.createElement('div');
-            el.style.width = cellSize + 'px';
-            el.style.height = cellSize + 'px';
-            el.style.borderRadius = '1px';
-            if (imageData.data[idx] > 80) {
-                el.className = 'pixel-active';
-                activePixels.push({ el: el, c: c });
-            } else {
-                el.style.background = 'rgba(255,255,255,0.1)';
-            }
-            grid.appendChild(el);
-        }
-    }
-
-    if (prefersReducedMotion) {
-        for (var i = 0; i < activePixels.length; i++) {
-            activePixels[i].el.style.background = 'hsl(200,80%,60%)';
-        }
-        return;
-    }
-
-    // 彩虹流动动画
-    var offset = 0;
-    function animate() {
-        for (var i = 0; i < activePixels.length; i++) {
-            var p = activePixels[i];
-            var hue = ((p.c / cols) * 300 + offset) % 360;
-            if (hue < 0) hue += 360;
-            p.el.style.background = 'hsl(' + hue + ',80%,60%)';
-        }
-        offset -= 0.4;
-        _pixelAnimationId = requestAnimationFrame(animate);
-    }
-
-    _pixelObserver = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-            if (entry.isIntersecting) {
-                if (!_pixelAnimationId) animate();
-            } else {
-                if (_pixelAnimationId) {
-                    cancelAnimationFrame(_pixelAnimationId);
-                    _pixelAnimationId = null;
-                }
-            }
-        });
-    }, { threshold: 0.1 });
-
-    _pixelObserver.observe(grid.parentElement);
+<style>
+/* ===== 基础重置 ===== */
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+    font-family:"Segoe UI",sans-serif;
+    color:#fff;
+    height:100vh;
+    overflow:hidden;
+    background:
+    linear-gradient(rgba(0,0,0,0),rgba(0,0,0,0)),
+    url('https://images.unsplash.com/photo-1501785888041-af3ef285b470') center/cover no-repeat;
 }
 
-// 默认渲染
-renderPixelBanner('我爱雨云');
+/* ===== 动画 ===== */
+@keyframes fadeIn{
+    from{opacity:0;transform:translateY(20px);}
+    to{opacity:1;}
+}
+@keyframes liquid{
+    0%{background-position:0%;}
+    100%{background-position:100%;}
+}
 
-// 窗口大小变化时重新渲染像素横幅
-var _pixelResizeTimer;
-var _lastPixelText = '我爱雨云';
-window.addEventListener('resize', function() {
-    clearTimeout(_pixelResizeTimer);
-    _pixelResizeTimer = setTimeout(function() {
-        renderPixelBanner(_lastPixelText);
-    }, 200);
+/* ===== 液态玻璃 ===== */
+.glass{
+    position:fixed;
+    left:16px;
+    right:16px;
+    padding:10px 20px;
+    border-radius:25px;
+
+    display:flex;
+    align-items:center;
+
+    background:
+    linear-gradient(120deg,
+        rgba(255,255,255,0.15),
+        rgba(120,180,255,0.25),
+        rgba(255,255,255,0.15)
+    );
+    background-size:200%;
+
+    animation:liquid 8s linear infinite;
+
+    backdrop-filter:blur(30px);
+    box-shadow:0 8px 30px rgba(0,0,0,0.4);
+}
+
+header{top:10px;}
+footer{bottom:12px;justify-content:center;font-size:13px;}
+
+/* ===== 导航 ===== */
+.logo{display:flex;align-items:center;gap:10px;}
+.logo img{width:34px;height:34px;border-radius:50%;}
+
+nav{
+    margin-left:auto;
+    display:flex;
+    gap:18px;
+    align-items:center;
+}
+
+nav a{
+    color:#fff;
+    text-decoration:none;
+    font-size:14px;
+}
+
+/* ===== 语言菜单 ===== */
+.lang-box{position:relative;}
+
+.lang-current{
+    padding:6px 12px;
+    border-radius:20px;
+    background:rgba(0,0,0,0.25);
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+
+.lang-menu{
+    position:absolute;
+    top:45px;
+    right:0;
+    width:260px;
+
+    background:rgba(0,0,0,0.8);
+    border-radius:12px;
+    overflow:hidden;
+    display:none;
+}
+
+.lang-menu div{
+    padding:10px;
+    cursor:pointer;
+}
+.lang-menu div:hover{
+    background:rgba(255,255,255,0.2);
+}
+
+/* ===== 主体 ===== */
+.hero{
+    position:absolute;
+    top:45%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    text-align:center;
+    animation:fadeIn 1s;
+}
+
+.btn{
+    padding:10px 25px;
+    border:none;
+    border-radius:20px;
+    background:rgba(0,200,200,0.5);
+    color:#fff;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<header class="glass">
+<div class="logo">
+<img src="assets/logo.jpg">
+<span>高辰君</span>
+</div>
+
+<nav>
+<a href="index.html" data-key="home">首页</a>
+<a href="projects.html" data-key="projects">项目</a>
+<a href="about.html" data-key="about">关于</a>
+
+<div class="lang-box">
+<div class="lang-current" onclick="toggleLang(event)" id="currentLang">
+🌐 简体中文（中国）
+</div>
+
+<div class="lang-menu" id="langMenu">
+<div onclick="setLang('zh-cn')">简体中文（中国）</div>
+<div onclick="setLang('zh-hk')">繁體中文（中國香港特別行政區）</div>
+<div onclick="setLang('zh-tw')">繁體中文（中國台灣省）</div>
+<div onclick="setLang('en')">English (US)</div>
+</div>
+</div>
+
+</nav>
+</header>
+
+<div class="hero">
+<h1 id="title">海内存知己，天涯若比邻</h1>
+<br>
+<button class="btn" id="btn">查看我的项目</button>
+</div>
+
+<footer class="glass">
+<span>Copyright © 2018-2026 高辰君 · All Rights Reserved</span>
+</footer>
+
+<script>
+const langData={
+"zh-cn":{home:"首页",projects:"项目",about:"关于",title:"海内存知己，天涯若比邻",btn:"查看我的项目"},
+"zh-hk":{home:"首頁",projects:"項目",about:"關於",title:"海內存知己，天涯若比鄰",btn:"查看我的項目"},
+"zh-tw":{home:"首頁",projects:"專案",about:"關於",title:"海內存知己，天涯若比鄰",btn:"查看我的專案"},
+"en":{home:"Home",projects:"Projects",about:"About",title:"True friendship transcends distance",btn:"View Projects"}
+};
+
+function setLang(l){
+localStorage.setItem("lang",l);
+apply(l);
+}
+
+function apply(l){
+const t=langData[l];
+document.getElementById("title").innerText=t.title;
+document.getElementById("btn").innerText=t.btn;
+
+document.querySelectorAll("[data-key]").forEach(el=>{
+el.innerText=t[el.getAttribute("data-key")];
 });
+
+document.getElementById("currentLang").innerText=
+document.querySelector(`#langMenu div[onclick="setLang('${l}')"]`).innerText;
+}
+
+window.onload=()=>apply(localStorage.getItem("lang")||"zh-cn");
+
+function toggleLang(e){
+e.stopPropagation();
+langMenu.style.display=langMenu.style.display==="block"?"none":"block";
+}
+document.addEventListener("click",()=>langMenu.style.display="none");
 </script>
-<script>
-(function () {
-    // 项目图标 SVG 映射
-    const iconSVG = {
-        globe:   '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>',
-        code:    '<svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>',
-        layout:  '<svg viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>',
-        sparkle: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3z"/></svg>',
-        server:  '<svg viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>',
-        palette: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>',
-        terminal:'<svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>',
-        book:    '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>'
-    };
 
-    function esc(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
-
-    // 自动跑路检测
-    fetch('admin/api.php?action=check_nuke')
-        .then(r => r.json())
-        .then(res => {
-            if (res.success && res.nuked) {
-                if (res.redirect_url) {
-                    window.location.href = res.redirect_url;
-                } else {
-                    document.body.innerHTML =
-                        '<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#181c21;color:#fff;font-family:sans-serif;">' +
-                        '<div style="text-align:center;padding:40px;">' +
-                        '<div style="font-size:48px;margin-bottom:16px;">&#128075;</div>' +
-                        '<h1 style="font-size:28px;margin-bottom:8px;">再见！</h1>' +
-                        '<p style="color:rgba(255,255,255,0.5);font-size:14px;">网站已自动清空。</p>' +
-                        '</div></div>';
-                }
-                throw new Error('nuked');
-            }
-        })
-        .catch(() => {});
-
-    // 从后端加载动态内容
-    fetch('admin/api.php?action=get_content')
-        .then(r => r.json())
-        .then(res => {
-            if (!res.success || !res.data) return;
-            const d = res.data;
-            // 背景设置
-            const bgMode = d.bg_mode || 'default';
-            const bgBlur = d.bg_blur ?? 6;
-            const bgOpacity = d.bg_opacity ?? 70;
-
-            // 应用模糊度
-            const bgBlurEl = document.querySelector('.bg-blur');
-            if (bgBlurEl) {
-                bgBlurEl.style.backdropFilter = 'blur(' + bgBlur + 'px)';
-                bgBlurEl.style.webkitBackdropFilter = 'blur(' + bgBlur + 'px)';
-            }
-
-            if (bgMode === 'image' && d.bg_image) {
-                // 自定义图片背景
-                const bgEl = document.querySelector('.bg');
-                if (bgEl) {
-                    bgEl.innerHTML = '';
-                    bgEl.style.backgroundImage = 'url(' + d.bg_image + ')';
-                    bgEl.style.backgroundSize = 'cover';
-                    bgEl.style.backgroundPosition = 'center';
-                    bgEl.style.backgroundRepeat = 'no-repeat';
-                }
-                // 遮罩层
-                if (bgBlurEl) {
-                    bgBlurEl.style.background = 'rgba(24, 28, 33, ' + (bgOpacity / 100) + ')';
-                }
-            } else {
-                // 默认纹理背景 — 仅应用遮罩透明度（如果非默认值）
-                if (bgOpacity != 70 && bgBlurEl) {
-                    bgBlurEl.style.background = 'rgba(24, 28, 33, ' + (bgOpacity / 100 * 0.3) + ')';
-                }
-            }
-
-            // 头像（桌面端 + 移动端）
-            if (d.avatar) {
-                document.querySelectorAll('.avatar, .mobile-avatar').forEach(function(avatarEl) {
-                    const placeholder = avatarEl.querySelector('.avatar-placeholder');
-                    if (placeholder) placeholder.style.display = 'none';
-                    const existImg = avatarEl.querySelector('.avatar-img');
-                    if (existImg) existImg.remove();
-                    const img = document.createElement('img');
-                    img.className = 'avatar-img';
-                    img.src = d.avatar;
-                    img.alt = '头像';
-                    avatarEl.appendChild(img);
-                });
-            }
-
-            // 标题
-            const tp = document.querySelector('.title-prefix');
-            const tt = document.querySelector('.title');
-            if (tp && d.title_prefix) tp.textContent = d.title_prefix;
-            if (tt && d.title) tt.textContent = d.title;
-
-            // 副标题
-            const sp = document.querySelector('.subtitle-prefix');
-            const sn = document.querySelector('.subtitle-name');
-            if (sp && d.subtitle_prefix) sp.textContent = d.subtitle_prefix;
-            if (sn && d.subtitle_name) sn.textContent = d.subtitle_name;
-
-            // 渐变色
-            if (d.gradient_colors && d.gradient_colors.length >= 2) {
-                const gradColors = d.gradient_colors.join(', ');
-                const gradCSS = 'linear-gradient(135deg, ' + gradColors + ')';
-                const animate = d.gradient_animate !== false;
-                [tt, sn].forEach(el => {
-                    if (!el) return;
-                    el.style.background = gradCSS;
-                    el.style.webkitBackgroundClip = 'text';
-                    el.style.webkitTextFillColor = 'transparent';
-                    el.style.backgroundClip = 'text';
-                    if (animate) {
-                        el.style.backgroundSize = '200% 200%';
-                        el.style.animation = 'gradientText 4s ease infinite';
-                    } else {
-                        el.style.backgroundSize = '100% 100%';
-                        el.style.animation = 'none';
-                    }
-                });
-            }
-
-            // 像素文字
-            if (d.pixel_text) {
-                _lastPixelText = d.pixel_text;
-                renderPixelBanner(d.pixel_text);
-            }
-
-            // 个人简介
-            const introEl = document.querySelector('.intro-text');
-            if (introEl && d.intro) introEl.textContent = d.intro;
-
-            // 技能
-            if (d.skills && d.skills.length > 0) {
-                const sg = document.querySelector('.skills-grid');
-                if (sg) {
-                    sg.innerHTML = d.skills.map(s => '<span class="skill-tag">' + esc(s) + '</span>').join('');
-                }
-            }
-
-            // 项目
-            if (d.projects && d.projects.length > 0) {
-                const pg = document.querySelector('.projects-grid');
-                if (pg) {
-                    pg.innerHTML = d.projects.map(p => {
-                        const icon = iconSVG[p.icon] || iconSVG.globe;
-                        const inner =
-                            '<div class="project-icon">' + icon + '</div>' +
-                            '<div class="project-title">' + esc(p.title) + '</div>' +
-                            '<div class="project-desc">' + esc(p.desc) + '</div>';
-                        if (p.link) {
-                            return '<a class="project-item project-link" href="' + esc(p.link) + '" target="_blank" rel="noopener noreferrer">' + inner + '</a>';
-                        }
-                        return '<div class="project-item">' + inner + '</div>';
-                    }).join('');
-                }
-            }
-
-            // 联系方式
-            if (d.contact) {
-                const ci = document.querySelectorAll('.contact-item');
-                if (ci[0] && d.contact.email) ci[0].innerHTML = ci[0].querySelector('svg').outerHTML + ' Email: ' + esc(d.contact.email);
-                if (ci[1] && d.contact.wechat) ci[1].innerHTML = ci[1].querySelector('svg').outerHTML + ' WeChat: ' + esc(d.contact.wechat);
-                if (ci[2] && d.contact.github) ci[2].innerHTML = ci[2].querySelector('svg').outerHTML + ' GitHub: ' + esc(d.contact.github);
-            }
-        })
-        .catch(() => {})
-        .finally(function() {
-            document.querySelector('.main-content').classList.add('loaded');
-        });
-
-    // 兜底：如果 API 超过 1.5 秒没响应，也显示页面
-    setTimeout(function() {
-        document.querySelector('.main-content').classList.add('loaded');
-    }, 1500);
-
-    // 邮件表单 — 图片上传处理
-    var emailImageFile = document.getElementById('emailImageFile');
-    var emailImageUpload = document.getElementById('emailImageUpload');
-    var emailImagePlaceholder = document.getElementById('emailImagePlaceholder');
-    var emailImagePreview = document.getElementById('emailImagePreview');
-    var emailImagePreviewImg = document.getElementById('emailImagePreviewImg');
-    var emailImageRemove = document.getElementById('emailImageRemove');
-    var pendingImageData = '';
-
-    if (emailImagePlaceholder) {
-        emailImagePlaceholder.addEventListener('click', function () { emailImageFile.click(); });
-    }
-
-    // 拖拽上传
-    if (emailImageUpload) {
-        emailImageUpload.addEventListener('dragover', function (e) { e.preventDefault(); this.classList.add('dragover'); });
-        emailImageUpload.addEventListener('dragleave', function () { this.classList.remove('dragover'); });
-        emailImageUpload.addEventListener('drop', function (e) {
-            e.preventDefault();
-            this.classList.remove('dragover');
-            var file = e.dataTransfer.files[0];
-            if (file) handleEmailImage(file);
-        });
-    }
-
-    if (emailImageFile) {
-        emailImageFile.addEventListener('change', function () {
-            if (this.files[0]) handleEmailImage(this.files[0]);
-        });
-    }
-
-    function handleEmailImage(file) {
-        if (!file.type.match(/^image\/(jpeg|png|gif|webp)$/)) {
-            alert('仅支持 JPG/PNG/GIF/WebP 格式');
-            return;
-        }
-        if (file.size > 2 * 1024 * 1024) {
-            alert('图片不能超过 2MB');
-            return;
-        }
-        var reader = new FileReader();
-        reader.onload = function (e) {
-            pendingImageData = e.target.result;
-            emailImagePreviewImg.src = pendingImageData;
-            emailImagePreview.style.display = '';
-            emailImagePlaceholder.style.display = 'none';
-        };
-        reader.readAsDataURL(file);
-    }
-
-    if (emailImageRemove) {
-        emailImageRemove.addEventListener('click', function (e) {
-            e.stopPropagation();
-            pendingImageData = '';
-            emailImagePreviewImg.src = '';
-            emailImagePreview.style.display = 'none';
-            emailImagePlaceholder.style.display = '';
-            if (emailImageFile) emailImageFile.value = '';
-        });
-    }
-
-    // 邮件表单 — 提交到后端 API
-    const form = document.getElementById('emailReplyForm');
-    if (form) {
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
-            const name    = (form.querySelector('[name="name"]').value || '').trim();
-            const email   = (form.querySelector('[name="from"]').value || '').trim();
-            const message = (form.querySelector('[name="message"]').value || '').trim();
-
-            if (!name || !email || !message) {
-                alert('请填写完整信息');
-                return;
-            }
-
-            const btn = form.querySelector('.email-submit');
-            const origText = btn.textContent;
-            btn.textContent = '发送中...';
-            btn.disabled = true;
-
-            var payload = { name: name, email: email, message: message };
-            if (pendingImageData) payload.image = pendingImageData;
-
-            fetch('admin/api.php?action=save_message', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            })
-            .then(r => r.json())
-            .then(res => {
-                btn.textContent = origText;
-                btn.disabled = false;
-                payload = null; // 释放大对象
-                if (res.success) {
-                    alert(res.message || '留言发送成功！');
-                    form.reset();
-                    pendingImageData = '';
-                    if (emailImagePreview) emailImagePreview.style.display = 'none';
-                    if (emailImagePlaceholder) emailImagePlaceholder.style.display = '';
-                    if (emailImagePreviewImg) emailImagePreviewImg.src = '';
-                    if (emailImageFile) emailImageFile.value = '';
-                } else {
-                    alert(res.message || '发送失败，请重试');
-                }
-            })
-            .catch(() => {
-                btn.textContent = origText;
-                btn.disabled = false;
-                alert('网络错误，请稍后重试');
-            });
-        });
-    }
-
-    // 导航滚动 — 点击侧边栏导航项平滑滚动到对应区域
-    const navMap = {
-        'nav-about': 'about',
-        'nav-skills': 'skills',
-        'nav-projects': 'projects',
-        'nav-contact': 'contact'
-    };
-    document.querySelectorAll('.radio-container input[name="nav"]').forEach(function(radio) {
-        radio.addEventListener('change', function() {
-            const targetId = navMap[this.id];
-            const el = targetId && document.getElementById(targetId);
-            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        });
-    });
-
-    // 联系图标点击 — 滚动到联系区域
-    document.querySelectorAll('.glass-radio-group input').forEach(function(radio) {
-        radio.addEventListener('change', function() {
-            var el = document.getElementById('contact');
-            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        });
-    });
-})();
-</script>
-<script>
-// 滚动渐入动画
-(function() {
-    var items = document.querySelectorAll('.fade-in');
-    if (!items.length) return;
-    // 尊重减少动效偏好
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        items.forEach(function(el) { el.classList.add('visible'); });
-        return;
-    }
-    var observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.08 });
-    // 交错延迟
-    items.forEach(function(el, i) {
-        el.style.transitionDelay = (i * 0.07) + 's';
-        observer.observe(el);
-    });
-})();
-</script>
 </body>
 </html>

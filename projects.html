@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>项目 | 高辰君</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+font-family:"Segoe UI";
+color:#fff;
+min-height:100vh;
+
+background:
+linear-gradient(rgba(0,0,0,0),rgba(0,0,0,0)),
+url('https://images.unsplash.com/photo-1501785888041-af3ef285b470') center/cover fixed;
+}
+
+/* ===== 动画 ===== */
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(20px);}
+to{opacity:1;}
+}
+@keyframes liquid{
+0%{background-position:0%;}
+100%{background-position:100%;}
+}
+
+/* ===== 液态玻璃 ===== */
+.glass{
+position:fixed;
+left:16px;
+right:16px;
+padding:10px 20px;
+border-radius:25px;
+
+display:flex;
+align-items:center;
+
+background:
+linear-gradient(120deg,
+rgba(255,255,255,0.15),
+rgba(120,180,255,0.25),
+rgba(255,255,255,0.15)
+);
+background-size:200%;
+animation:liquid 8s linear infinite;
+
+backdrop-filter:blur(30px);
+box-shadow:0 8px 30px rgba(0,0,0,0.4);
+}
+
+header{top:10px;}
+footer{bottom:12px;justify-content:center;font-size:13px;}
+
+/* ===== 导航 ===== */
+.logo{display:flex;gap:10px;align-items:center;}
+.logo img{width:34px;height:34px;border-radius:50%;}
+
+nav{margin-left:auto;display:flex;gap:18px;align-items:center;}
+nav a{color:#fff;text-decoration:none;font-size:14px;}
+
+/* ===== 语言菜单 ===== */
+.lang-box{position:relative;}
+
+.lang-current{
+padding:6px 12px;
+border-radius:20px;
+background:rgba(0,0,0,0.25);
+cursor:pointer;
+display:flex;
+align-items:center;
+gap:6px;
+}
+
+.lang-menu{
+position:absolute;
+top:45px;
+right:0;
+width:260px;
+background:rgba(0,0,0,0.8);
+border-radius:12px;
+display:none;
+}
+
+.lang-menu div{padding:10px;cursor:pointer;}
+.lang-menu div:hover{background:rgba(255,255,255,0.2);}
+
+/* ===== 内容 ===== */
+.container{
+margin-top:140px;
+display:flex;
+justify-content:center;
+gap:30px;
+flex-wrap:wrap;
+animation:fadeIn 1s;
+}
+
+.card{
+width:260px;
+padding:25px;
+text-align:center;
+border-radius:18px;
+
+background:rgba(255,255,255,0.1);
+backdrop-filter:blur(15px);
+
+transition:0.4s;
+}
+
+.card:hover{
+transform:translateY(-10px) scale(1.05);
+}
+
+/* ===== footer ===== */
+
+/* 去除项目下划线的css效果 */
+a{
+    text-decoration: none;
+    color: #fff;
+}
+</style>
+</head>
+
+<body>
+
+<header class="glass">
+<div class="logo">
+<img src="assets/logo.jpg">
+<span>高辰君</span>
+</div>
+
+<nav>
+<a href="index.html" data-key="home">首页</a>
+<a href="projects.html" data-key="projects">项目</a>
+<a href="about.html" data-key="about">关于</a>
+
+<div class="lang-box">
+<div class="lang-current" onclick="toggleLang(event)" id="currentLang">
+🌐 简体中文（中国）
+</div>
+
+<div class="lang-menu" id="langMenu">
+<div onclick="setLang('zh-cn')">简体中文（中国）</div>
+<div onclick="setLang('zh-hk')">繁體中文（中國香港特別行政區）</div>
+<div onclick="setLang('zh-tw')">繁體中文（中國台灣省）</div>
+<div onclick="setLang('en')">English (US)</div>
+</div>
+</div>
+
+</nav>
+</header>
+
+<div class="container">
+
+<div class="card">
+<a href="Hello Time/index.html">Hello Time</a>
+<p id="p1">时间类创意项目</p>
+</div>
+
+<div class="card">
+<a href="不死图腾/index.html">不死图腾</a>
+<p id="p2">救助项目</p>
+</div>
+
+</div>
+
+<footer class="glass">
+<span>Copyright © 2018-2026 高辰君 · All Rights Reserved</span>
+</footer>
+
+<script>
+const langData={
+"zh-cn":{home:"首页",projects:"项目",about:"关于",p1:"时间类创意项目",p2:"救助项目"},
+"zh-hk":{home:"首頁",projects:"項目",about:"關於",p1:"時間類創意項目",p2:"救助項目"},
+"zh-tw":{home:"首頁",projects:"專案",about:"關於",p1:"時間類創意專案",p2:"救助項目"},
+"en":{home:"Home",projects:"Projects",about:"About",p1:"Time Project",p2:"relief project"}
+};
+
+function setLang(l){
+localStorage.setItem("lang",l);
+apply(l);
+}
+
+function apply(l){
+const t=langData[l];
+
+p1.innerText=t.p1;
+p2.innerText=t.p2;
+
+document.querySelectorAll("[data-key]").forEach(el=>{
+el.innerText=t[el.getAttribute("data-key")];
+});
+
+document.getElementById("currentLang").innerText=
+document.querySelector(`#langMenu div[onclick="setLang('${l}')"]`).innerText;
+}
+
+window.onload=()=>apply(localStorage.getItem("lang")||"zh-cn");
+
+function toggleLang(e){
+e.stopPropagation();
+langMenu.style.display=langMenu.style.display==="block"?"none":"block";
+}
+document.addEventListener("click",()=>langMenu.style.display="none");
+</script>
+
+</body>
+</html>
