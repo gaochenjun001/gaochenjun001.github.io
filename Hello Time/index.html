@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Hello Time</title>
+<link rel="icon" type="image/png" href="logo/logo1.png">
+<meta name="description" content="Hello Time 是一款专注高效与极简体验的时间提醒软件，帮助你更好地规划时间、管理待办和重要提醒。">
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html, body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  color: #1f2933;
+  background-color: #f5f7fb;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.page {
+  flex: 1 0 auto;
+}
+.container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  backdrop-filter: blur(12px);
+  background: rgba(245, 247, 251, 0.9);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+.logo-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.logo-mark {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #ff9f43, #ff6b81, #5352ed);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.22);
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: 0.02em;
+}
+.logo-text-main {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+.logo-text-sub {
+  font-size: 12px;
+  color: #6b7280;
+}
+.nav {
+  display: flex;
+  gap: 20px;
+  font-size: 14px;
+}
+.nav a {
+  position: relative;
+  padding-bottom: 2px;
+  color: #4b5563;
+}
+.nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #f97316, #f59e0b);
+  transition: width 0.18s ease-out;
+}
+.nav a:hover::after {
+  width: 100%;
+}
+.header-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.header-cta {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(249, 115, 22, 0.18);
+  background: linear-gradient(135deg, #f97316, #f59e0b);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(249, 115, 22, 0.35);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.header-cta.secondary {
+  background: transparent;
+  color: #4b5563;
+  border-color: rgba(148, 163, 184, 0.45);
+  box-shadow: none;
+}
+.header-cta:hover {
+  opacity: 0.92;
+}
+.hero {
+  padding: 72px 0 40px;
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 48px;
+  align-items: center;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(249, 115, 22, 0.06);
+  color: #f97316;
+  font-size: 12px;
+  margin-bottom: 18px;
+}
+.hero-badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: #22c55e;
+  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.25);
+}
+.hero-title {
+  font-size: 36px;
+  line-height: 1.25;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #111827;
+  margin-bottom: 18px;
+}
+.hero-title span {
+  background: linear-gradient(120deg, #f97316, #fbbf24);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.hero-subtitle {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #4b5563;
+  margin-bottom: 24px;
+}
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 28px;
+  font-size: 13px;
+  color: #6b7280;
+}
+.hero-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.hero-meta-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: #9ca3af;
+}
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+.btn {
+  padding: 10px 22px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-primary {
+  background: linear-gradient(135deg, #f97316, #f59e0b);
+  color: #ffffff;
+  box-shadow: 0 10px 28px rgba(249, 115, 22, 0.32);
+}
+.btn-ghost {
+  background: transparent;
+  color: #4b5563;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+}
+.btn-primary:hover {
+  opacity: 0.93;
+}
+.btn-ghost:hover {
+  background: rgba(148, 163, 184, 0.08);
+}
+.hero-note {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-top: 6px;
+}
+.hero-visual {
+  position: relative;
+}
+.hero-card {
+  border-radius: 28px;
+  background: radial-gradient(circle at 0% 0%, #fef9c3 0%, #f9fafb 30%, #e5e7eb 100%);
+  box-shadow: 0 26px 60px rgba(15, 23, 42, 0.16);
+  padding: 18px 18px 20px;
+}
+.hero-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.hero-card-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+}
+.hero-card-time {
+  font-size: 12px;
+  color: #6b7280;
+}
+.hero-card-body {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  padding: 14px 14px 10px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.1);
+}
+.hero-task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.hero-task {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.hero-task-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.hero-task-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: #111827;
+}
+.hero-task-sub {
+  font-size: 11px;
+  color: #6b7280;
+}
+.hero-task-badge {
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #f97316;
+  background: rgba(249, 115, 22, 0.1);
+}
+.hero-progress {
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: #e5e7eb;
+  overflow: hidden;
+}
+.hero-progress-bar {
+  height: 100%;
+  width: 64%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #22c55e, #84cc16);
+}
+.hero-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  font-size: 11px;
+  color: #6b7280;
+}
+.hero-bubbles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.hero-bubble {
+  position: absolute;
+  border-radius: 999px;
+  background: radial-gradient(circle at 0 0, rgba(248, 250, 252, 0.9), rgba(251, 191, 36, 0.06));
+  border: 1px solid rgba(248, 250, 252, 0.6);
+  box-shadow: 0 14px 38px rgba(15, 23, 42, 0.15);
+  backdrop-filter: blur(10px);
+}
+.hero-bubble:nth-child(1) {
+  width: 120px;
+  height: 120px;
+  top: -28px;
+  right: 8px;
+}
+.hero-bubble:nth-child(2) {
+  width: 86px;
+  height: 86px;
+  bottom: -18px;
+  left: -6px;
+}
+.hero-bubble:nth-child(3) {
+  width: 60px;
+  height: 60px;
+  top: 40%;
+  left: -18px;
+}
+.section {
+  padding: 28px 0 8px;
+}
+.section-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.section-kicker {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  color: #f97316;
+  margin-bottom: 6px;
+}
+.section-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 8px;
+}
+.section-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+}
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+.feature-card {
+  border-radius: 18px;
+  background: #ffffff;
+  padding: 16px 16px 14px;
+  box-shadow: 0 12px 26px rgba(148, 163, 184, 0.18);
+}
+.feature-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 14px;
+  background: rgba(249, 115, 22, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+.feature-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.feature-desc {
+  font-size: 13px;
+  color: #6b7280;
+  line-height: 1.6;
+}
+.feature-tag {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 8px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(34, 197, 94, 0.07);
+  color: #16a34a;
+  font-size: 11px;
+}
+.download {
+  padding: 28px 0 20px;
+}
+.download-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 26px;
+  align-items: center;
+}
+.download-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 18px 18px 16px;
+  box-shadow: 0 14px 32px rgba(148, 163, 184, 0.28);
+}
+.download-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.download-desc {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 16px;
+}
+.download-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.download-btn {
+  flex: 0 0 auto;
+  padding: 8px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.8);
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  background: #f9fafb;
+}
+.download-btn.primary {
+  border-color: transparent;
+  background: linear-gradient(135deg, #f97316, #f59e0b);
+  color: #ffffff;
+}
+.download-hint {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #9ca3af;
+}
+.download-note {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 6px;
+}
+.download-qr {
+  justify-self: center;
+}
+.download-qr-box {
+  width: 140px;
+  height: 140px;
+  border-radius: 22px;
+  border: 1px dashed rgba(148, 163, 184, 0.7);
+  background: repeating-linear-gradient(45deg, #f3f4f6 0, #f3f4f6 6px, #e5e7eb 6px, #e5e7eb 8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: #6b7280;
+}
+.download-qr-text {
+  font-size: 12px;
+  margin-top: 8px;
+  text-align: center;
+  color: #9ca3af;
+}
+.about {
+  padding: 18px 0 28px;
+}
+.about-inner {
+  background: linear-gradient(120deg, #fef3c7, #f9fafb);
+  border-radius: 20px;
+  padding: 18px 18px 18px;
+  border: 1px solid rgba(249, 115, 22, 0.1);
+}
+.about-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.about-content {
+  font-size: 13px;
+  color: #4b5563;
+  line-height: 1.7;
+}
+.about-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #6b7280;
+}
+.about-meta-item-label {
+  color: #9ca3af;
+  margin-right: 4px;
+}
+.footer {
+  flex-shrink: 0;
+  border-top: 1px solid rgba(15, 23, 42, 0.06);
+  background: #f9fafb;
+}
+.footer-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 24px 16px 26px;
+  font-size: 14px;
+  color: #6b7280;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.footer-links a {
+  color: #9ca3af;
+}
+.footer-copy {
+  color: #4b5563;
+}
+.footer-copy span {
+  white-space: nowrap;
+}
+@media (max-width: 960px) {
+  .hero-inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .hero {
+    padding-top: 54px;
+  }
+  .header-inner {
+    gap: 12px;
+  }
+}
+@media (max-width: 768px) {
+  .header-inner {
+    height: auto;
+    padding: 10px 0;
+    flex-wrap: wrap;
+  }
+  .nav {
+    width: 100%;
+    justify-content: center;
+    margin-top: 8px;
+  }
+  .hero-title {
+    font-size: 28px;
+  }
+  .hero-subtitle {
+    font-size: 14px;
+  }
+  .features-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .download-inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 560px) {
+  .features-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .header-actions {
+    display: none;
+  }
+  .hero {
+    padding-top: 40px;
+  }
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="header">
+    <div class="container header-inner">
+      <div class="logo-group">
+        <img src="logo/logo2.png" alt="Hello Time Logo" style="height: 40px; width: auto; border-radius: 10px;">
+        <div>
+
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="#features">产品特色</a>
+        <a href="download.html">下载体验</a>
+        <a href="#about">关于产品</a>
+      </nav>
+      <div class="header-actions">
+        <button class="header-cta secondary" type="button">使用说明</button>
+        <a href="download.html" class="header-cta">立即下载</a>
+      </div>
+    </div>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="container hero-inner">
+        <div>
+          <div class="hero-badge">
+            <span class="hero-badge-dot"></span>
+            <span>Hello Time · 时间提醒更轻松</span>
+          </div>
+          <h1 class="hero-title">
+            让每一个提醒都刚刚好
+            <br>
+            <span>简单专注的时间管理助手</span>
+          </h1>
+          <p class="hero-subtitle">
+            Hello Time 是一款为繁忙工作与生活场景设计的时间提醒工具。
+            用更轻、更干净的方式，帮你记住重要的时刻、待办与长期目标，
+            把注意力留给真正重要的事情。
+          </p>
+          <div class="hero-meta">
+            <div class="hero-meta-item">
+              <span class="hero-meta-dot"></span>
+              <span>Android 专属优化</span>
+            </div>
+            <div class="hero-meta-item">
+              <span class="hero-meta-dot"></span>
+              <span>Material Design 设计</span>
+            </div>
+            <div class="hero-meta-item">
+              <span class="hero-meta-dot"></span>
+              <span>完全离线可用</span>
+            </div>
+          </div>
+          <div class="hero-actions">
+            <a href="download.html" class="btn btn-primary">免费下载体验</a>
+            <button class="btn btn-ghost" type="button">查看使用示例</button>
+          </div>
+          <div class="hero-note">当前版本覆盖日常学习、工作与个人生活提醒场景。</div>
+        </div>
+        <div class="hero-visual">
+          <img src="logo/phone.png" alt="Hello Time App Interface" style="width: 100%; max-width: 350px; border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); border: 8px solid #fff; display: block; margin: 0 auto;">
+        </div>
+      </div>
+    </section>
+    <section id="features" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-kicker">FEATURES</div>
+          <h2 class="section-title">为真实使用场景设计的功能</h2>
+          <p class="section-subtitle">既要足够强大，又要简单到一眼就会用。</p>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">⏰</div>
+            <div class="feature-title">多种提醒形式</div>
+            <div class="feature-desc">
+              支持一次性提醒、周期重复、倒计时等多种提醒方式，
+              满足会议、任务、纪念日等不同时间管理需求。
+            </div>
+            <div class="feature-tag">按需设置，不遗漏任何重要时刻</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">✅</div>
+            <div class="feature-title">清晰的待办视图</div>
+            <div class="feature-desc">
+              将当天提醒、即将到期事项、长期计划分栏展示，
+              帮你一眼看清接下来要做什么，避免信息堆叠。
+            </div>
+            <div class="feature-tag">轻量有序的时间面板</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔒</div>
+            <div class="feature-title">本地数据更安心</div>
+            <div class="feature-desc">
+              以本地使用为主，重要提醒与计划全部保存在你的设备中，
+              在高效与隐私之间做出平衡。
+            </div>
+            <div class="feature-tag">专注使用，而非运营你的数据</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🎯</div>
+            <div class="feature-title">专注模式与番茄钟</div>
+            <div class="feature-desc">
+              配合简单的专注计时功能，帮助你在一段时间内只做一件事，
+              减少打断，提高完成质量。
+            </div>
+            <div class="feature-tag">适合学习、写作与深度工作</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📅</div>
+            <div class="feature-title">日程与长期计划</div>
+            <div class="feature-desc">
+              将日常提醒与长期目标结合，既能处理眼前任务，
+              也能定期回看更长期的时间规划。
+            </div>
+            <div class="feature-tag">把握节奏，而非被节奏推着走</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🌙</div>
+            <div class="feature-title">贴心的细节体验</div>
+            <div class="feature-desc">
+              支持常用快捷操作、提醒静音时段等贴心设计，
+              在不打扰的前提下，保持对关键事项的关注。
+            </div>
+            <div class="feature-tag">细节打磨，让使用变得自然</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <section id="about" class="about">
+      <div class="container">
+        <div class="about-inner">
+          <h2 class="about-title">关于 Hello Time</h2>
+          <div class="about-content">
+            Hello Time 起源于对“时间感”的思考：在被各种消息、应用占据的屏幕上，
+            有没有一种更轻、更安静的方式，帮我们持续记住重要的事情。
+            于是有了这款专注时间提醒与节奏感的小工具。
+          </div>
+          <div class="about-meta">
+            <div class="about-meta-item">
+              <span class="about-meta-item-label">产品定位</span>
+              <span>轻量时间提醒 · 非重型日历</span>
+            </div>
+            <div class="about-meta-item">
+              <span class="about-meta-item-label">适用人群</span>
+              <span>学生、独立开发者、内容创作者、需要合理规划时间的你</span>
+            </div>
+            <div class="about-meta-item">
+              <span class="about-meta-item-label">产品理念</span>
+              <span>帮你记住重要的事，而不是占据你的注意力</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-copy">
+      <span>Copyright ©2018-2026 高辰君 保留所有权利</span>
+    </div>
+    <div class="footer-links">
+      <a href="#features">产品特色</a>
+      <a href="download.html">下载体验</a>
+      <a href="#about">关于产品</a>
+    </div>
+  </div>
+</footer>
+    <script src="../js/database.js"></script>
+</body>
+</html>
